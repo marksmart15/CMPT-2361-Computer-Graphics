@@ -1,6 +1,11 @@
 #pragma once
 
 class Pixel {
+private:
+    unsigned int red;
+    unsigned int green;
+    unsigned int blue;
+
 public:
 
     Pixel();
@@ -13,20 +18,15 @@ public:
     const unsigned int& operator[](const char* color) const;
 
     class InputOutOfBoundsException {
+    private:
+        const char* errorMessage;
+        const char* offendingIndex;
+
     public:
         InputOutOfBoundsException(const char* errorMessage, const char* offendingIndex);
         const char* returnError() const;
         const char* returnOffendingIndex() const;
-
-    private:
-        const char* errorMessage;
-        const char* offendingIndex;
     };
-
-private:
-    unsigned int red;
-    unsigned int green;
-    unsigned int blue;
 };
 
 
