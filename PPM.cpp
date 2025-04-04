@@ -1,5 +1,6 @@
-#include "PPM.hpp"
+#include "PPM.h"
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <algorithm>
 using namespace std;
@@ -37,7 +38,7 @@ const Pixel& PPM::operator[](unsigned int index) const {
 }
 
 Pixel& PPM::operator[](unsigned int index) {
-    if(index < 0 || index >= 3)
+    if(index >= pixels.size())
     {
         cout << "> ERROR: Index out of bounds.";
         exit(1);
@@ -73,33 +74,80 @@ PPM::PPM() : comment(""), height(0), magic(""), maxColor(0), pixels(), width(0)
 {}
 // copy constructor
 PPM::PPM(const PPM& obj) {
-    
+    this->magic = obj.magic;
+    this->comment = obj.comment;
+    this->width = obj.width;
+    this->height = obj.height;
+    this->maxColor = obj.maxColor;
+    this->pixels = obj.pixels;
 }
+
 PPM::PPM(ifstream& infile) {
-    if(infile)
-    {
+    if (infile) {
         getline(infile, magic);
         getline(infile, comment);
         infile >> width >> height;
         infile >> maxColor;
 
         Resize(width * height);
-        
+
         for (int i = 0; i < width * height; ++i) {
-            int r, g, b;
+            unsigned int r, g, b;
             infile >> r >> g >> b;
             pixels[i] = Pixel{r, g, b};
         }
     }
-    else
-    {
-        cout << "> ERROR opening the input file.\n";
-    }
 }
 // move constructor
 PPM::PPM(PPM&& obj) {
-    
+    swap(this->width, obj.width);
+    swap(this->height, obj.height);
+    swap(this->maxColor, obj.maxColor);
+    swap(this->comment, obj.comment);
+    swap(this->magic, obj.magic);
+    swap(this->pixels, obj.pixels);
 }
-void PPM::SaveImageToFile(string input) {
+
+void PPM::Resize(unsigned int newSize) {
+    pixels.resize(newSize);
+}
+
+void PPM::SaveImageToFile(string filename) {
+    ofstream outfile(filename);
     
+    if (!outfile) {
+        cout << "Error: Could not open file " << filename << " for writing.\n";
+        return;
+    }
+
+    outfile << magic << "\n";
+    outfile << comment << "\n";
+    outfile << width << " " << height << "\n";
+    outfile << maxColor << "\n";
+    
+    for (int i = 0; i < width * height; i++) {
+        outfile << pixels[i]["red"] << " " << pixels[i]["green"] << " " << pixels[i]["blue"] << endl;
+    }
+
+    outfile.close();
+}
+
+void PPM::SetComment(string newComment) {
+    comment = newComment;
+}
+
+void PPM::SetHeight(unsigned int newHeight) {
+    height = newHeight;
+}
+
+void PPM::SetMagic(string newMagic) {
+    magic = newMagic;
+}
+
+void PPM::SetMaxColor(unsigned int newMaxColor) {
+    maxColor = newMaxColor;
+}
+
+void PPM::SetWidth(unsigned int newWidth) {
+    width = newWidth;
 }
