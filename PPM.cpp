@@ -82,16 +82,13 @@ PPM::PPM(ifstream& infile) {
         getline(infile, comment);
         infile >> width >> height;
         infile >> maxColor;
+
+        Resize(width * height);
         
-        infile >> pixels;
-        // construct pixels
-        
-        for(int row = 0; row < numrows; row++)
-        {
-            for(int col = 0; col < numcols; col++)
-            {
-                infile >> board[row][col];
-            }
+        for (int i = 0; i < width * height; ++i) {
+            int r, g, b;
+            infile >> r >> g >> b;
+            pixels[i] = Pixel{r, g, b};
         }
     }
     else
