@@ -1,7 +1,7 @@
 #ifndef PPM_h
 #define PPM_h
-#include "Pixel.hpp"
-#include <iostream>
+#include "Pixel.h"
+#include <vector>
 using namespace std;
 
 class PPM {
