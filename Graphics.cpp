@@ -41,7 +41,7 @@ const PPM& Graphics::ScaleImage(PPM& image, double scaleFactor) {
 }
 
 const PPM& Graphics::RotateImage(PPM& image, double angle) {
-    double radians = angle * M_PI / 180.0;
+    double radians = angle * 3.14159 / 180.0;
     unsigned int width = image.GetWidth();
     unsigned int height = image.GetHeight();
     int centerX = width / 2;
